@@ -1,0 +1,64 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_webai
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./data/db_data:/var/lib/mysql
+    networks:
+      - webai_network
+
+  minio:
+    image: minio/minio
+    container_name: minio_webai
+    ports:
+      - "${MINIO_PORT}:${MINIO_PORT}" # API port
+      - "9001:9001"                    # Console port
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ID}
+      MINIO_ROOT_PASSWORD: ${MINIO_ACCESS_KEY}
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./data/minio_data:/data
+    networks:
+      - webai_network
+
+  redis:
+    image: redis:7.2
+    container_name: redis_webai
+    restart: always
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - ./data/redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - webai_network
+    
+  webai:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: hafidzalasqalani/webai:latest
+    container_name: app_webai
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+      - minio
+    networks:
+      - webai_network
+
+# Define the network
+networks:
+  webai_network:
+    driver: bridge

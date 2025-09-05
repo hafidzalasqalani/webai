@@ -1,0 +1,13 @@
+# Environment variables
+.env
+
+# Git files
+.git/
+.gitignore
+
+# Data
+data/
+
+# Docker
+Dockerfile
+docker-compose.yaml
