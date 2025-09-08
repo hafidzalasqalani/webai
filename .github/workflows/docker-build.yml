@@ -24,7 +24,7 @@ jobs:
       # 3. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t hafidzalasqalani/webai:latest .
+          docker build --no-cache -t hafidzalasqalani/webai:latest .
 
       # 4. Push Docker image ke Docker Hub
       - name: Push Docker image
