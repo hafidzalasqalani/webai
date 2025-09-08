@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: hafidzalasqalani/webai-manifest  # Repo manifest
-        token: ${{ secrets.GITHUB_TOKEN }}  # Gunakan token GitHub untuk akses repo
+        token: ${{ secrets.GB_TOKEN }}  # Gunakan token GitHub untuk akses repo
 
     - name: Update Kubernetes Deployment Manifest
       run: |
