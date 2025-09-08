@@ -3,7 +3,7 @@ name: Build and Push Django Docker Image
 on:
   push:
     branches:
-      - main  # jalankan saat push ke branch main
+      - main
 
 jobs:
   build-and-push:
@@ -21,12 +21,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      # 3. Build Docker image
+      # 3. Generate image tag (timestamp)
+      - name: Set image tag
+        id: vars
+        run: echo "IMAGE_TAG=$(date +'%Y%m%d-%H%M')" >> $GITHUB_ENV
+
+      # 4. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t hafidzalasqalani/webai:latest .
+          docker build -t hafidzalasqalani/webai:latest -t hafidzalasqalani/webai:${IMAGE_TAG} .
 
-      # 4. Push Docker image ke Docker Hub
+      # 5. Push Docker image
       - name: Push Docker image
         run: |
           docker push hafidzalasqalani/webai:latest
+          docker push hafidzalasqalani/webai:${IMAGE_TAG}
