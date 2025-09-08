@@ -34,8 +34,8 @@ jobs:
     - name: Update Kubernetes Deployment Manifest
       run: |
         # Update image tag di file webai-initdb.yaml dan webai-deployment.yaml yang ada di folder templates
-        sed -i "s|image: hafidzalasqalani/webai:.*|image: hafidzalasqalani/webai:${{ github.sha }}|g" templates/webai-initdb.yaml
-        # sed -i "s|image: hafidzalasqalani/webai:.*|image: hafidzalasqalani/webai:${{ github.sha }}|g" templates/webai-deployment.yaml
+        # sed -i "s|image: hafidzalasqalani/webai:.*|image: hafidzalasqalani/webai:${{ github.sha }}|g" templates/webai-initdb.yaml
+        sed -i "s|image: hafidzalasqalani/webai:.*|image: hafidzalasqalani/webai:${{ github.sha }}|g" templates/webai-deployment.yaml
 
     - name: Commit and Push Changes to Repo B (webai-manifest)
       run: |
